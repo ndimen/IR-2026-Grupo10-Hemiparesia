@@ -1,0 +1,53 @@
+{
+    "paciente": "12345678",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 4397.88,
+            "distancia_final": 8.06,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 1369.03,
+            "distancia_final": 2.24,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 2305.25,
+            "distancia_final": 9.0,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 2476.69,
+            "distancia_final": 4.12,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 1518.41,
+            "distancia_final": 3.61,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1308.06,
+            "distancia_final": 3.0,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 1817.24,
+            "distancia_final": 8.06,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 3655.69,
+            "distancia_final": 4.24,
+            "exito": true
+        }
+    ]
+}
