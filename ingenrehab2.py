@@ -11,10 +11,9 @@ from reportlab.pdfgen import canvas as pdf_canvas
 from reportlab.lib.units import cm
 import platform
 import subprocess
+import menu # <--- IMPORTAMOS EL NUEVO ARCHIVO DEL MENÚ
 
-# ----------------------------
-# CONFIGURACIÓN VISUAL
-# ----------------------------
+
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
@@ -43,7 +42,7 @@ FUENTE_BOTON = ("Arial", 18, "bold")
 # ----------------------------
 # APP
 # ----------------------------
-class App(ctk.CTk):
+class FittsApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
@@ -68,7 +67,7 @@ class App(ctk.CTk):
         self.archivo_json = None
         self.archivo_pdf = None
 
-        self.crear_pantalla_inicio()
+        menu.crear_pantalla_login(self)
 
     def iniciar_cuenta_regresiva(self):
         self.limpiar_ventana()
@@ -222,11 +221,13 @@ class App(ctk.CTk):
     # ----------------------------
     # PANTALLA INICIAL
     # ----------------------------
+   # ----------------------------
+    # PANTALLA INICIAL (LIMPIA)
+    # ----------------------------
     def crear_pantalla_inicio(self):
         self.limpiar_ventana()
-        self.entry_paciente = None
 
-        frame = self.crear_tarjeta_centrada(relwidth=0.62, relheight=0.78)
+        frame = self.crear_tarjeta_centrada(relwidth=0.62, relheight=0.75)
 
         ctk.CTkLabel(
             frame,
@@ -242,25 +243,13 @@ class App(ctk.CTk):
             text_color=COLOR_TEXTO
         ).pack(pady=(0, 10))
 
+        # Mostramos el paciente que ya inició sesión
         ctk.CTkLabel(
             frame,
-            text="Evaluación de velocidad y precisión del movimiento",
-            font=FUENTE_TEXTO,
-            text_color=COLOR_SUBTEXTO
-        ).pack(pady=(0, 24))
-
-        self.entry_paciente = ctk.CTkEntry(
-            frame,
-            placeholder_text="Ingresar DNI del paciente",
-            width=340,
-            height=52,
-            corner_radius=14,
-            font=("Arial", 18),
-            fg_color="#0B1220",
-            border_color=COLOR_PANEL_2,
-            text_color=COLOR_TEXTO
-        )
-        self.entry_paciente.pack(pady=(20, 30))
+            text=f"Jugador actual: {self.nombre_paciente} (DNI: {self.id_paciente})",
+            font=("Arial", 18, "bold"),
+            text_color=COLOR_ACCION
+        ).pack(pady=(10, 20))
 
         texto_simple = (
             "Esta prueba consiste en tocar círculos en la pantalla.\n"
@@ -273,20 +262,12 @@ class App(ctk.CTk):
             font=FUENTE_TEXTO,
             justify="center",
             text_color=COLOR_SUBTEXTO
-        ).pack(pady=(20, 40))
-
-        self.label_error_inicio = ctk.CTkLabel(
-            frame,
-            text="",
-            font=("Arial", 16, "bold"),
-            text_color=COLOR_ERROR
-        )
-        self.label_error_inicio.pack(pady=(0, 8))
+        ).pack(pady=(10, 30))
 
         self.crear_boton_principal(
             frame,
             "Ver instrucciones",
-            self.validar_e_ir_a_instrucciones,
+            self.crear_pantalla_instrucciones, # Va directo a las instrucciones
             color="#3B82F6",
             hover="#2563EB"
         ).pack(pady=10)
@@ -297,30 +278,15 @@ class App(ctk.CTk):
             self.iniciar_test
         ).pack(pady=10)
 
-    # ----------------------------
-    # VALIDACIÓN PREVIA
-    # ----------------------------
-    def validar_e_ir_a_instrucciones(self):
-        if self.entry_paciente is None or not self.entry_paciente.winfo_exists():
-            self.crear_pantalla_inicio()
-            self.label_error_inicio.configure(text="Error: no se pudo acceder al campo DNI.")
-            return
-
-        dni = self.entry_paciente.get().strip()
-        dni_valido, mensaje_error = self.validar_dni(dni)
-
-        if not dni_valido:
-            self.label_error_inicio.configure(text=mensaje_error)
-            self.entry_paciente.delete(0, "end")
-            self.entry_paciente.configure(border_color=COLOR_ERROR)
-            return
-
-        self.entry_paciente.configure(border_color=COLOR_PANEL_2)
-        self.label_error_inicio.configure(text="")
-        self.id_paciente = dni
-        self.crear_pantalla_instrucciones()
-
-    # ----------------------------
+        self.crear_boton_principal(
+            frame,
+            "Volver al Menú",
+            lambda: menu.crear_pantalla_menu(self),
+            color="#64748B",
+            hover="#475569"
+        ).pack(pady=10)
+        
+    # ----------------------------    
     # INSTRUCCIONES
     # ----------------------------
     def crear_pantalla_instrucciones(self):
@@ -724,11 +690,11 @@ class App(ctk.CTk):
         ).pack(pady=(18, 10))
 
         self.crear_boton_principal(
-            frame,
-            "Volver al inicio",
-            self.crear_pantalla_inicio,
-            width=300
-        ).pack(pady=10)
+         frame,
+         "Volver al menú",
+         lambda: menu.crear_pantalla_menu(self),
+         width=300
+     ).pack(pady=10)
 
 # ----------------------------
 # EJECUCIÓN
