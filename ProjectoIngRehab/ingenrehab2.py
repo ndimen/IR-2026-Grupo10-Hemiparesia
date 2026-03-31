@@ -42,13 +42,12 @@ FUENTE_BOTON = ("Arial", 18, "bold")
 # ----------------------------
 # APP
 # ----------------------------
-class FittsApp(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-
-        self.title("OpenRehab ACV - Ley de Fitts")
-        self.geometry(f"{ANCHO}x{ALTO}")
-        self.resizable(False, False)
+class FittsApp(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(parent, fg_color="#0F172A")
+        self.id_paciente = parent.id_paciente
+        self.nombre_paciente = parent.nombre_paciente
+        
         self.configure(fg_color=COLOR_FONDO)
 
         self.id_paciente = ""
@@ -67,7 +66,7 @@ class FittsApp(ctk.CTk):
         self.archivo_json = None
         self.archivo_pdf = None
 
-        menu.crear_pantalla_login(self)
+        self.crear_pantalla_inicio()
 
     def iniciar_cuenta_regresiva(self):
         self.limpiar_ventana()
@@ -353,25 +352,6 @@ class FittsApp(ctk.CTk):
     # TEST
     # ----------------------------
     def iniciar_test(self):
-        if not self.id_paciente:
-            if self.entry_paciente is not None and self.entry_paciente.winfo_exists():
-                dni = self.entry_paciente.get().strip()
-                dni_valido, mensaje_error = self.validar_dni(dni)
-
-                if not dni_valido:
-                    self.label_error_inicio.configure(text=mensaje_error)
-                    self.entry_paciente.delete(0, "end")
-                    self.entry_paciente.configure(border_color=COLOR_ERROR)
-                    return
-
-                self.entry_paciente.configure(border_color=COLOR_PANEL_2)
-                self.label_error_inicio.configure(text="")
-                self.id_paciente = dni
-            else:
-                self.crear_pantalla_inicio()
-                self.label_error_inicio.configure(text="Por favor, ingresá primero el DNI.")
-                return
-
         self.crear_pantalla_listo()
 
     def comenzar_evaluacion_real(self):
@@ -699,6 +679,3 @@ class FittsApp(ctk.CTk):
 # ----------------------------
 # EJECUCIÓN
 # ----------------------------
-if __name__ == "__main__":
-    app = FittsApp()
-    app.mainloop()

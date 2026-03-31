@@ -10,6 +10,7 @@ import subprocess
 from datetime import datetime
 from reportlab.pdfgen import canvas as pdf_canvas
 from reportlab.lib.pagesizes import A4
+import menu  # <--- NUEVO: Importamos tu archivo de menú
 
 ANCHO = 1100
 ALTO = 760
@@ -23,24 +24,50 @@ COLOR_ERROR = "#EF4444"
 COLOR_OBJ = "#38BDF8"
 COLOR_TARGET = "#F97316"
 
-class DragDropGame(ctk.CTk):
+class DragDropGame(ctk.CTkFrame):
+    def __init__(self, parent): # <--- Quitamos el id_paciente de aquí
+        super().__init__(parent, fg_color="#0F172A")
 
-    def __init__(self, id_paciente="test"):
-        super().__init__()
-
-        self.geometry(f"{ANCHO}x{ALTO}")
         self.configure(fg_color=COLOR_FONDO)
 
-        self.id_paciente = id_paciente
+        # Variables obligatorias para que el menú funcione
+        self.id_paciente = ""
+        self.nombre_paciente = ""
 
         self.intento = 1
         self.resultados = []
         self.t_inicio = None
-
         self.dragging = False
         self.timer_running = False
 
-        self.crear_ui()
+        # CAMBIO CLAVE: En lugar de llamar a self.crear_ui(), 
+        # llamamos al login del menú para que identifique al paciente primero.
+        self.crear_pantalla_inicio()
+        
+    def limpiar_ventana(self):
+        """Borra todo lo que hay en la pantalla actual"""
+        for widget in self.winfo_children():
+            widget.destroy()
+
+    def crear_pantalla_inicio(self):
+        """Esta es la PORTADA del juego que se ve después del menú"""
+        self.limpiar_ventana()
+        
+        frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=20)
+        frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=0.7, relheight=0.6)
+
+        ctk.CTkLabel(frame, text="Juego 2: Arrastre y Soltar", font=("Arial", 30, "bold")).pack(pady=20)
+        ctk.CTkLabel(frame, text=f"Paciente: {self.nombre_paciente}", font=("Arial", 18)).pack(pady=10)
+        
+        instrucciones = "Instrucciones: Arrastra el círculo azul hacia el objetivo naranja.\nRepite el proceso 8 veces."
+        ctk.CTkLabel(frame, text=instrucciones, font=("Arial", 16), wraplength=500).pack(pady=20)
+
+        # Este botón es el que finalmente llama a la función que YA TENÍAS
+        ctk.CTkButton(frame, text="Comenzar Juego", command=self.crear_ui, 
+                      fg_color=COLOR_ACCION, hover_color="#16A34A", width=200, height=50).pack(pady=20)
+        
+        ctk.CTkButton(frame, text="Volver al Menú", command=lambda: menu.crear_pantalla_menu(self), 
+                      fg_color="#475569", width=200).pack(pady=10)
 
     # ----------------------------
     def crear_ui(self):
@@ -280,7 +307,3 @@ class DragDropGame(ctk.CTk):
             height=50
         ).pack(pady=10)
 
-
-if __name__ == "__main__":
-    app = DragDropGame("12345678")
-    app.mainloop()

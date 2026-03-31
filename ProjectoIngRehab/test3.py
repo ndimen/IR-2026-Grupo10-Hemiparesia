@@ -11,6 +11,7 @@ from reportlab.pdfgen import canvas as pdf_canvas
 from reportlab.lib.units import cm
 import platform
 import subprocess
+import menu
 
 # ----------------------------
 # CONFIGURACIÓN VISUAL
@@ -165,46 +166,38 @@ def dificultad_para_laberinto(idx, total):
 # ----------------------------
 # APP
 # ----------------------------
-class MazeApp(ctk.CTk):
-    def __init__(self):
-        super().__init__()
+class MazeApp(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(parent, fg_color="#0F172A")
+        # Asegúrate de que COLOR_FONDO esté definido arriba en tu archivo
+        self.configure(fg_color=COLOR_FONDO) 
 
-        self.title("OpenRehab ACV - Test de Estabilidad")
-        self.geometry(f"{ANCHO}x{ALTO}")
-        self.resizable(False, False)
-        self.configure(fg_color=COLOR_FONDO)
-
-        self.id_paciente    = ""
+        # 👇 1. Tomamos los datos del paciente desde el main.py
+        self.id_paciente = parent.id_paciente
+        self.nombre_paciente = parent.nombre_paciente
+        
+        # Variable por defecto para los laberintos
         self.num_laberintos = DEFAULT_LABERINTOS
-        self.entry_paciente = None
-        self.label_error_inicio = None
-        self._num_lab_var   = None
 
-        self.secuencia_waypoints   = []
-        self.laberinto_actual      = 0
-        self.waypoints             = []
-        self.camino_puntos         = []
-
-        self.recorriendo       = False
-        self.inicio_alcanzado  = False
-        self.tiempo_inicio     = None
-        self.tiempo_fin        = None
-
-        self.colisiones        = 0
-        self.muestras_fuera    = 0
-        self.total_muestras    = 0
-        self.trayectoria       = []
+        # --- AQUÍ MANTENEMOS TUS VARIABLES ORIGINALES ---
+        self.secuencia_waypoints = []
         self.resultados_laberintos = []
-        self._colision_activa  = False
+        self.laberinto_actual = 0
+        
+        self.waypoints = []
+        self.camino_puntos = []
+        
+        self.recorriendo = False
+        self.inicio_alcanzado = False
+        self.tiempo_inicio = None
+        self.tiempo_fin = None
+        self.colisiones = 0
+        self.muestras_fuera = 0
+        self.total_muestras = 0
+        self.trayectoria = []
+        self._colision_activa = False
 
-        self.archivo_json = None
-        self.archivo_pdf  = None
-
-        self.canvas       = None
-        self.cursor_id    = None
-        self.label_estado = None
-        self.label_errores= None
-
+        # 👇 2. Llamamos a la primera pantalla de tu juego
         self.crear_pantalla_inicio()
 
     # ----------------------------
@@ -817,6 +810,3 @@ class MazeApp(ctk.CTk):
 # ----------------------------
 # EJECUCION
 # ----------------------------
-if __name__ == "__main__":
-    app = MazeApp()
-    app.mainloop()
