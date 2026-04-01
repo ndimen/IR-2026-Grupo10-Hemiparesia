@@ -353,21 +353,16 @@ class MazeApp(ctk.CTkFrame):
     # VALIDACION
     # ----------------------------
     def validar_e_ir_a_instrucciones(self):
-        if self.entry_paciente is None or not self.entry_paciente.winfo_exists():
-            self.crear_pantalla_inicio(); return
-        dni = self.entry_paciente.get().strip()
-        ok, msg = self.validar_dni(dni)
-        if not ok:
-            self.label_error_inicio.configure(text=msg)
-            self.entry_paciente.delete(0, "end")
-            self.entry_paciente.configure(border_color=COLOR_ERROR)
-            return
-        self.entry_paciente.configure(border_color=COLOR_PANEL_2)
-        self.label_error_inicio.configure(text="")
-        self.id_paciente    = dni
-        self.num_laberintos = self._num_lab_var.get()
-        self.crear_pantalla_instrucciones()
+        self.num_laberintos = self._num_lab_var.get() if self._num_lab_var else DEFAULT_LABERINTOS
 
+        if not self.id_paciente:
+            self.label_error_inicio.configure(
+                text="No hay un paciente cargado. Volve al menu principal."
+            )
+            return
+
+        self.label_error_inicio.configure(text="")
+        self.crear_pantalla_instrucciones()
     # ----------------------------
     # INSTRUCCIONES
     # ----------------------------
@@ -432,19 +427,11 @@ class MazeApp(ctk.CTkFrame):
     # ----------------------------
     def iniciar_test(self):
         if not self.id_paciente:
-            if self.entry_paciente is not None and self.entry_paciente.winfo_exists():
-                dni = self.entry_paciente.get().strip()
-                ok, msg = self.validar_dni(dni)
-                if not ok:
-                    self.label_error_inicio.configure(text=msg)
-                    self.entry_paciente.delete(0, "end")
-                    self.entry_paciente.configure(border_color=COLOR_ERROR)
-                    return
-                self.entry_paciente.configure(border_color=COLOR_PANEL_2)
-                self.label_error_inicio.configure(text="")
-                self.id_paciente = dni
-            else:
-                self.crear_pantalla_inicio(); return
+            if self.label_error_inicio is not None and self.label_error_inicio.winfo_exists():
+                self.label_error_inicio.configure(
+                    text="No hay un paciente cargado. Volve al menu principal."
+                )
+            return
 
         self.num_laberintos = self._num_lab_var.get() if self._num_lab_var else DEFAULT_LABERINTOS
 
@@ -456,7 +443,7 @@ class MazeApp(ctk.CTkFrame):
             for i in range(self.num_laberintos)
         ]
 
-        self.laberinto_actual      = 0
+        self.laberinto_actual = 0
         self.resultados_laberintos = []
         self.iniciar_cuenta_regresiva()
 

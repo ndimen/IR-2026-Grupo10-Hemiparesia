@@ -1,0 +1,53 @@
+{
+    "id_paciente": "46581711",
+    "nombre_paciente": "gaby",
+    "fecha": "2026-04-01 13:27:36",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 2850.7,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 1515.04,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 1381.66,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1450.11,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 1687.58,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1303.43,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 1396.12,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 1395.66,
+            "exito": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 1622.54
+    }
+}
