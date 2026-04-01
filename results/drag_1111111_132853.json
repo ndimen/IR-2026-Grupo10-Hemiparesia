@@ -1,0 +1,53 @@
+{
+    "id_paciente": "1111111",
+    "nombre_paciente": "hola",
+    "fecha": "2026-04-01 13:28:53",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 2764.44,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 1550.03,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 1916.13,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1933.17,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 2166.38,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 4299.66,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 3133.7,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 2315.81,
+            "exito": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 2509.91
+    }
+}

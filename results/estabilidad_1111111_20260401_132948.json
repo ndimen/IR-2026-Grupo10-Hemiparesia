@@ -1,0 +1,43 @@
+{
+    "id_paciente": "1111111",
+    "fecha": "2026-04-01 13:29:48",
+    "laberintos": [
+        {
+            "laberinto": 1,
+            "dificultad": 1,
+            "duracion_ms": 2211.77,
+            "colisiones": 0,
+            "muestras_totales": 203,
+            "muestras_fuera": 0,
+            "porcentaje_fuera": 0.0,
+            "ruido_motor_estimado": 0.0
+        },
+        {
+            "laberinto": 2,
+            "dificultad": 2,
+            "duracion_ms": 2109.48,
+            "colisiones": 2,
+            "muestras_totales": 188,
+            "muestras_fuera": 22,
+            "porcentaje_fuera": 11.7,
+            "ruido_motor_estimado": 2.17
+        },
+        {
+            "laberinto": 3,
+            "dificultad": 3,
+            "duracion_ms": 3507.35,
+            "colisiones": 0,
+            "muestras_totales": 406,
+            "muestras_fuera": 0,
+            "porcentaje_fuera": 0.0,
+            "ruido_motor_estimado": 0.0
+        }
+    ],
+    "resumen": {
+        "total_laberintos": 3,
+        "total_colisiones": 2,
+        "tiempo_total_ms": 7828.6,
+        "promedio_porcentaje_fuera": 3.9,
+        "indice_ruido_motor": 0.723
+    }
+}
