@@ -1,0 +1,45 @@
+{
+    "paciente": "",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 6229.77,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 2104.54,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 2199.97,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1883.1,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 1888.61,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1686.89,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 2363.34,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 1823.68,
+            "exito": true
+        }
+    ]
+}

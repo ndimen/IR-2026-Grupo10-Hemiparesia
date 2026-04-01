@@ -131,7 +131,7 @@ class FittsApp(ctk.CTk):
         self.crear_boton_principal(
             frame,
             "Volver",
-            self.crear_pantalla_instrucciones,
+            self.crear_pantalla_inicio, #vuelve a inicio, no a instrucciones porque ya las vió
             color="#64748B",
             hover="#475569",
             width=280
