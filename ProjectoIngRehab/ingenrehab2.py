@@ -45,12 +45,13 @@ FUENTE_BOTON = ("Arial", 18, "bold")
 class FittsApp(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent, fg_color="#0F172A")
+
+        self.parent = parent
         self.id_paciente = parent.id_paciente
         self.nombre_paciente = parent.nombre_paciente
-        
+
         self.configure(fg_color=COLOR_FONDO)
 
-        self.id_paciente = ""
         self.entry_paciente = None
         self.intento_actual = 0
         self.aciertos = 0
@@ -65,7 +66,7 @@ class FittsApp(ctk.CTkFrame):
 
         self.archivo_json = None
         self.archivo_pdf = None
-
+        
         self.crear_pantalla_inicio()
 
     def iniciar_cuenta_regresiva(self):
@@ -280,7 +281,7 @@ class FittsApp(ctk.CTkFrame):
         self.crear_boton_principal(
             frame,
             "Volver al Menú",
-            lambda: menu.crear_pantalla_menu(self),
+            lambda: menu.crear_pantalla_menu(self.parent),
             color="#64748B",
             hover="#475569"
         ).pack(pady=10)
@@ -670,11 +671,11 @@ class FittsApp(ctk.CTkFrame):
         ).pack(pady=(18, 10))
 
         self.crear_boton_principal(
-         frame,
-         "Volver al menú",
-         lambda: menu.crear_pantalla_menu(self),
-         width=300
-     ).pack(pady=10)
+            frame,
+            "Volver al menú",
+            lambda: menu.crear_pantalla_menu(self.parent),
+            width=300
+        ).pack(pady=10)
 
 # ----------------------------
 # EJECUCIÓN

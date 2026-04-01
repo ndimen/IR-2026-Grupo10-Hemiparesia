@@ -124,6 +124,14 @@ class DragDropGame(ctk.CTkFrame):
             self.crear_pantalla_listo
         ).pack(pady=10)
         
+        self.crear_boton_principal(
+            frame,
+            "Volver al Menú",
+            lambda: menu.crear_pantalla_menu(self.parent),
+            color="#64748B",
+            hover="#475569"
+        ).pack(pady=10)
+        
     def crear_pantalla_instrucciones(self):
         self.limpiar_ventana()
 

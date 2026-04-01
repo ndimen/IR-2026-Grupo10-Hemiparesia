@@ -1,0 +1,125 @@
+{
+    "id_paciente": "45813124",
+    "fecha": "2026-03-31 21:37:16",
+    "métrica_principal": 722.58,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "objetivo_x": 1006,
+            "objetivo_y": 131,
+            "radio": 55,
+            "distancia_desde_anterior_px": 0,
+            "ancho_objetivo_px": 110,
+            "indice_dificultad": 0,
+            "tiempo_ms": 619.38,
+            "acierto": true
+        },
+        {
+            "intento": 2,
+            "objetivo_x": 136,
+            "objetivo_y": 541,
+            "radio": 45,
+            "distancia_desde_anterior_px": 961.77,
+            "ancho_objetivo_px": 90,
+            "indice_dificultad": 3.547,
+            "tiempo_ms": 768.87,
+            "acierto": true
+        },
+        {
+            "intento": 3,
+            "objetivo_x": 332,
+            "objetivo_y": 303,
+            "radio": 35,
+            "distancia_desde_anterior_px": 308.32,
+            "ancho_objetivo_px": 70,
+            "indice_dificultad": 2.434,
+            "tiempo_ms": 820.85,
+            "acierto": true
+        },
+        {
+            "intento": 4,
+            "objetivo_x": 958,
+            "objetivo_y": 489,
+            "radio": 35,
+            "distancia_desde_anterior_px": 653.05,
+            "ancho_objetivo_px": 70,
+            "indice_dificultad": 3.369,
+            "tiempo_ms": 751.09,
+            "acierto": true
+        },
+        {
+            "intento": 5,
+            "objetivo_x": 96,
+            "objetivo_y": 248,
+            "radio": 45,
+            "distancia_desde_anterior_px": 895.06,
+            "ancho_objetivo_px": 90,
+            "indice_dificultad": 3.452,
+            "tiempo_ms": 666.76,
+            "acierto": true
+        },
+        {
+            "intento": 6,
+            "objetivo_x": 251,
+            "objetivo_y": 546,
+            "radio": 45,
+            "distancia_desde_anterior_px": 335.9,
+            "ancho_objetivo_px": 90,
+            "indice_dificultad": 2.243,
+            "tiempo_ms": 609.78,
+            "acierto": true
+        },
+        {
+            "intento": 7,
+            "objetivo_x": 735,
+            "objetivo_y": 69,
+            "radio": 35,
+            "distancia_desde_anterior_px": 679.55,
+            "ancho_objetivo_px": 70,
+            "indice_dificultad": 3.421,
+            "tiempo_ms": 932.17,
+            "acierto": true
+        },
+        {
+            "intento": 8,
+            "objetivo_x": 756,
+            "objetivo_y": 420,
+            "radio": 55,
+            "distancia_desde_anterior_px": 351.63,
+            "ancho_objetivo_px": 110,
+            "indice_dificultad": 2.069,
+            "tiempo_ms": 715.08,
+            "acierto": true
+        },
+        {
+            "intento": 9,
+            "objetivo_x": 653,
+            "objetivo_y": 100,
+            "radio": 55,
+            "distancia_desde_anterior_px": 336.17,
+            "ancho_objetivo_px": 110,
+            "indice_dificultad": 2.02,
+            "tiempo_ms": 663.95,
+            "acierto": true
+        },
+        {
+            "intento": 10,
+            "objetivo_x": 204,
+            "objetivo_y": 514,
+            "radio": 65,
+            "distancia_desde_anterior_px": 610.73,
+            "ancho_objetivo_px": 130,
+            "indice_dificultad": 2.51,
+            "tiempo_ms": 677.83,
+            "acierto": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 10,
+        "aciertos": 10,
+        "errores": 0,
+        "tiempo_promedio_ms": 722.58,
+        "indice_dificultad_promedio": 2.785
+    }
+}

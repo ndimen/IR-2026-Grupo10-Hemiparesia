@@ -169,12 +169,14 @@ def dificultad_para_laberinto(idx, total):
 class MazeApp(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent, fg_color="#0F172A")
+        self.parent = parent
         # Asegúrate de que COLOR_FONDO esté definido arriba en tu archivo
         self.configure(fg_color=COLOR_FONDO) 
 
         # 👇 1. Tomamos los datos del paciente desde el main.py
         self.id_paciente = parent.id_paciente
         self.nombre_paciente = parent.nombre_paciente
+        
         
         # Variable por defecto para los laberintos
         self.num_laberintos = DEFAULT_LABERINTOS
@@ -268,6 +270,7 @@ class MazeApp(ctk.CTkFrame):
                      text_color=COLOR_SUBTEXTO).pack(pady=(0, 20))
 
         # Campo DNI
+        """"
         self.entry_paciente = ctk.CTkEntry(
             frame, placeholder_text="Ingresar DNI del paciente",
             width=340, height=52, corner_radius=14,
@@ -275,6 +278,7 @@ class MazeApp(ctk.CTkFrame):
             border_color=COLOR_PANEL_2, text_color=COLOR_TEXTO
         )
         self.entry_paciente.pack(pady=(0, 18))
+        """
 
         # ── Selector de cantidad de laberintos ──
         caja = ctk.CTkFrame(frame, fg_color="#0B1220", corner_radius=16)
@@ -326,6 +330,14 @@ class MazeApp(ctk.CTkFrame):
         self.crear_boton_principal(
             frame, "Comenzar evaluacion",
             self.iniciar_test).pack(pady=8)
+        
+        self.crear_boton_principal(
+            frame,
+            "Volver al Menú",
+            lambda: menu.crear_pantalla_menu(self.parent),
+            color="#64748B",
+            hover="#475569"
+        ).pack(pady=10)
 
     def _dec_labs(self):
         v = self._num_lab_var.get()
@@ -803,9 +815,11 @@ class MazeApp(ctk.CTkFrame):
             color="#3B82F6", hover="#2563EB", width=300).pack(pady=(16, 8))
 
         self.crear_boton_principal(
-            frame, "Volver al inicio",
-            self.crear_pantalla_inicio, width=300).pack(pady=8)
-
+            frame,
+            "Volver al menú",
+            lambda: menu.crear_pantalla_menu(self.parent),
+            width=300
+        ).pack(pady=10)
 
 # ----------------------------
 # EJECUCION

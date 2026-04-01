@@ -1,0 +1,23 @@
+{
+    "id_paciente": "4581234",
+    "fecha": "2026-03-31 21:19:13",
+    "laberintos": [
+        {
+            "laberinto": 1,
+            "dificultad": 1,
+            "duracion_ms": 3145.51,
+            "colisiones": 0,
+            "muestras_totales": 309,
+            "muestras_fuera": 0,
+            "porcentaje_fuera": 0.0,
+            "ruido_motor_estimado": 0.0
+        }
+    ],
+    "resumen": {
+        "total_laberintos": 1,
+        "total_colisiones": 0,
+        "tiempo_total_ms": 3145.51,
+        "promedio_porcentaje_fuera": 0.0,
+        "indice_ruido_motor": 0.0
+    }
+}
