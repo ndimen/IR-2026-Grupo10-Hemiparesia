@@ -39,14 +39,14 @@ FUENTE_TEXTO_GRANDE = ("Arial", 22, "bold")
 FUENTE_BOTON = ("Arial", 18, "bold") #misma estructura que la de Fitts para mantener consistencia visual
 
 class DragDropGame(ctk.CTkFrame):
-    def __init__(self, parent): # <--- Quitamos el id_paciente de aquí
+    def __init__(self, parent):
         super().__init__(parent, fg_color="#0F172A")
 
+        self.parent = parent
         self.configure(fg_color=COLOR_FONDO)
 
-        # Variables obligatorias para que el menú funcione
-        self.id_paciente = ""
-        self.nombre_paciente = ""
+        self.id_paciente = parent.id_paciente
+        self.nombre_paciente = parent.nombre_paciente
 
         self.intento = 1
         self.resultados = []
@@ -573,7 +573,7 @@ class DragDropGame(ctk.CTkFrame):
         self.crear_boton_principal(
             frame,
             "Volver al menú",
-            lambda: menu.crear_pantalla_menu(self),
+            lambda: menu.crear_pantalla_menu(self.parent),
             width=300
         ).pack(pady=10)
 
