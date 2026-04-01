@@ -216,7 +216,7 @@ class DragDropGame(ctk.CTkFrame):
         self.crear_boton_principal(
             frame,
             "Sí, comenzar",
-            self.crear_ui,
+            self.iniciar_cuenta_regresiva,
             width=280
         ).pack(pady=12)
 
@@ -228,6 +228,28 @@ class DragDropGame(ctk.CTkFrame):
             hover="#475569",
             width=280
         ).pack(pady=12)
+        
+    def iniciar_cuenta_regresiva(self):
+        self.limpiar_ventana()
+
+        self.countdown_frame = self.crear_tarjeta_centrada(relwidth=0.55, relheight=0.55)
+
+        self.countdown_label = ctk.CTkLabel(
+            self.countdown_frame,
+            text="3",
+            font=("Arial", 90, "bold"),
+            text_color=COLOR_ALERTA
+        )
+        self.countdown_label.pack(expand=True)
+
+        self.after(1000, lambda: self.actualizar_cuenta_regresiva(2))
+    def actualizar_cuenta_regresiva(self, numero):
+        if numero > 0:
+            self.countdown_label.configure(text=str(numero))
+            self.after(1000, lambda: self.actualizar_cuenta_regresiva(numero - 1))
+        else:
+            self.countdown_label.configure(text="¡Comienza!", text_color=COLOR_ACCION)
+            self.after(800, self.crear_ui)
 
     def crear_tarjeta_centrada(self, relwidth=0.68, relheight=0.74):
         frame = ctk.CTkFrame(

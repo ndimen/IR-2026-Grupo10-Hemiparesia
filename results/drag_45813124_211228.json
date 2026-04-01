@@ -1,0 +1,53 @@
+{
+    "id_paciente": "45813124",
+    "nombre_paciente": "martina",
+    "fecha": "2026-03-31 21:12:28",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 2255.65,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 1557.21,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 1251.82,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1415.83,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 1397.2,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1638.48,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 1446.22,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 1970.96,
+            "exito": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 1616.67
+    }
+}
