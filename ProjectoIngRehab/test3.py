@@ -329,7 +329,7 @@ class MazeApp(ctk.CTkFrame):
 
         self.crear_boton_principal(
             frame, "Comenzar evaluacion",
-            self.iniciar_test).pack(pady=8)
+            self.crear_pantalla_listo).pack(pady=8)
         
         self.crear_boton_principal(
             frame,
@@ -402,6 +402,65 @@ class MazeApp(ctk.CTkFrame):
                                    self.crear_pantalla_inicio,
                                    color="#64748B", hover="#475569",
                                    width=280).pack(pady=10)
+    
+    def crear_pantalla_listo(self):
+    # GENERA LABERINTOS ACÁ
+        self.num_laberintos = self._num_lab_var.get() if self._num_lab_var else DEFAULT_LABERINTOS
+
+        self.secuencia_waypoints = [
+            generar_laberinto_aleatorio(
+                dificultad=dificultad_para_laberinto(i, self.num_laberintos)
+            )
+            for i in range(self.num_laberintos)
+        ]
+
+        self.laberinto_actual = 0
+        self.resultados_laberintos = []
+
+        # UI
+        self.limpiar_ventana()
+
+        frame = self.crear_tarjeta_centrada(relwidth=0.60, relheight=0.60)
+
+        ctk.CTkLabel(
+            frame,
+            text="¿Está listo?",
+            font=("Arial", 34, "bold"),
+            text_color=COLOR_TEXTO
+        ).pack(pady=(50, 20))
+
+        ctk.CTkLabel(
+            frame,
+            text="Cuando presione el botón, comenzará la evaluación.",
+            font=("Arial", 22),
+            text_color=COLOR_SUBTEXTO,
+            justify="center"
+        ).pack(pady=(0, 30))
+
+        ctk.CTkLabel(
+            frame,
+            text="Coloquese sobre el boton verde y siga el camino hasta el naranja.",
+            font=("Arial", 20, "bold"),
+            text_color=COLOR_ALERTA,
+            justify="center"
+        ).pack(pady=(0, 35))
+        
+        self.crear_boton_principal(
+            frame,
+            "Sí, comenzar",
+            self.iniciar_cuenta_regresiva,
+            width=280
+        ).pack(pady=12)
+
+        self.crear_boton_principal(
+            frame,
+            "Volver",
+            self.crear_pantalla_inicio,
+            color="#64748B",
+            hover="#475569",
+            width=280
+        ).pack(pady=12)
+
 
     # ----------------------------
     # CUENTA REGRESIVA
@@ -445,7 +504,7 @@ class MazeApp(ctk.CTkFrame):
 
         self.laberinto_actual = 0
         self.resultados_laberintos = []
-        self.iniciar_cuenta_regresiva()
+        self.crear_pantalla_listo()
 
     # ----------------------------
     # LABERINTO
