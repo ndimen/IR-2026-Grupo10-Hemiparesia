@@ -535,8 +535,9 @@ class FittsApp(ctk.CTkFrame):
                 "latencia_ms": r["tiempo_ms"] if r["acierto"] else 0
             })
 
-        # Generar observaciones automáticas basadas en los datos
+        # Generar observaciones y evaluación automáticas basadas en los datos
         observaciones = self._generar_observaciones(tiempo_promedio)
+        evaluacion = self._evaluar_desempeno(tiempo_promedio)
 
         data_estandar = {
             "id_paciente": self.id_paciente,
@@ -545,6 +546,7 @@ class FittsApp(ctk.CTkFrame):
             "metrica_principal": "Tiempo de Reacción",
             "valor_promedio": round(tiempo_promedio, 2),
             "unidad": "ms",
+            "evaluacion_desempeno": evaluacion,
             "intentos": intentos_estandar,
             "observaciones_ia": observaciones
         }
@@ -587,6 +589,56 @@ class FittsApp(ctk.CTkFrame):
                 observaciones.append(f"El usuario presenta signos de fatiga a partir del intento {intento_fatiga} (aumento del tiempo de reacción en la segunda mitad).")
 
         return " ".join(observaciones) if observaciones else "Sin observaciones relevantes."
+
+    def _evaluar_desempeno(self, tiempo_promedio):
+        """
+        Genera una etiqueta y descripción del desempeño general del paciente
+        combinando velocidad y precisión.
+        """
+        tasa_error = self.errores / max(self.aciertos + self.errores, 1)
+
+        # Clasificación de velocidad
+        if tiempo_promedio < 400:
+            velocidad = "rápido"
+        elif tiempo_promedio < 700:
+            velocidad = "esperado"
+        else:
+            velocidad = "lento"
+
+        # Clasificación de precisión
+        if tasa_error == 0:
+            precision = "preciso"
+        elif tasa_error <= 0.2:
+            precision = "moderadamente preciso"
+        else:
+            precision = "impreciso"
+
+        # Etiqueta combinada
+        if velocidad == "rápido" and precision == "preciso":
+            etiqueta = "Excelente"
+            descripcion = "Desempeño por encima de lo esperado: velocidad alta y sin errores."
+        elif velocidad == "rápido" and precision != "preciso":
+            etiqueta = "Rápido pero impreciso"
+            descripcion = "El paciente reacciona rápido pero sacrifica precisión. Puede indicar impulsividad motora."
+        elif velocidad == "esperado" and precision == "preciso":
+            etiqueta = "Esperado"
+            descripcion = "Desempeño dentro de los parámetros normales: velocidad y precisión adecuadas."
+        elif velocidad == "esperado" and precision != "preciso":
+            etiqueta = "Esperado con errores"
+            descripcion = "Velocidad normal pero con errores frecuentes. Se recomienda trabajar la precisión motora."
+        elif velocidad == "lento" and precision == "preciso":
+            etiqueta = "Lento pero preciso"
+            descripcion = "El paciente es cuidadoso pero lento. Puede indicar estrategia compensatoria o fatiga leve."
+        else:
+            etiqueta = "Bajo rendimiento"
+            descripcion = "Desempeño por debajo de lo esperado en velocidad y precisión. Se sugiere evaluación clínica."
+
+        return {
+            "etiqueta": etiqueta,
+            "velocidad": velocidad,
+            "precision": precision,
+            "descripcion": descripcion
+        }
 
     def generar_pdf(self, data):
         os.makedirs("results", exist_ok=True)
