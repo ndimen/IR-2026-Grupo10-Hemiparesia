@@ -512,35 +512,39 @@ class DragDropGame(ctk.CTkFrame):
 
         # DATOS GENERALES
         c.setFont("Helvetica", 12)
-        c.drawString(50, y, f"Paciente: {data['id_paciente']}")
+        c.drawString(50, y, f"Paciente: {data['nombre_paciente']}")
+        y -= 20
+        c.drawString(50, y, f"DNI: {data['id_paciente']}")
         y -= 20
         c.drawString(50, y, f"Fecha: {data['fecha']}")
-        y -= 20
-        c.drawString(50, y, f"Métrica: {data['metrica_principal']}")
-        y -= 20
-        c.drawString(50, y, f"Promedio: {data['valor_promedio']} {data['unidad']}")
         y -= 30
 
-        # DETALLE
-        c.setFont("Helvetica-Bold", 12)
-        c.drawString(50, y, "Intentos:")
+        c.drawString(50, y, f"Aciertos: {data['resumen']['aciertos']}")
         y -= 20
+        c.drawString(50, y, f"Errores: {data['resumen']['errores']}")
+        y -= 20
+        c.drawString(50, y, f"Tiempo promedio: {data['resumen']['tiempo_promedio_ms']} ms")
+        y -= 30
 
-        c.setFont("Helvetica", 10)
+        c.drawString(50, y, "Detalle de intentos:")
+        y -= 25
 
-        for intento in data["intentos"]:
-            linea = f"Intento {intento['intento']} - {intento['resultado']} - {intento['latencia_ms']} ms"
+        for r in data["intentos"]:
+            linea = f"Intento {r['intento']} - resultado: {r['resultado']} - latencia: {r['latencia_ms']} ms"
             c.drawString(50, y, linea)
             y -= 15
-
-            if y < 50:
+            
+            if y < 60:
                 c.showPage()
-                y = height - 50
-                c.setFont("Helvetica", 10)
+                y = 800
+                c.setFont("Helvetica", 12)
 
         # OBSERVACIONES
         y -= 20
         c.setFont("Helvetica-Oblique", 10)
+        c.drawString(50, y, f"Observaciones: {data['observaciones_ia']}")
+
+        y -= 10
         c.drawString(50, y, f"Observaciones: {data['observaciones_ia']}")
 
         c.save()
@@ -548,17 +552,17 @@ class DragDropGame(ctk.CTkFrame):
         return nombre
     # ----------------------------
     def finalizar(self):
-        # 🔴 cortar el loop del timer (FIX del bug)
         self.timer_running = False
         if self.after_id:
             self.after_cancel(self.after_id)
             self.after_id = None
 
-        # ----------------------------
-        # CALCULO DE METRICAS
-        # ----------------------------
-        tiempos = [r["tiempo_ms"] for r in self.resultados if r["exito"]]
-        promedio = sum(tiempos) / len(tiempos) if tiempos else 0
+        tiempos = [r["tiempo_ms"] for r in self.resultados]
+        exitos = [r for r in self.resultados if r["exito"]]
+
+        tiempo_promedio = sum(tiempos) / len(tiempos) if tiempos else 0
+        aciertos = len(exitos)
+        errores = len(self.resultados) - aciertos
 
         # ----------------------------
         # FORMATO NUEVO DE INTENTOS
@@ -571,18 +575,24 @@ class DragDropGame(ctk.CTkFrame):
                 "latencia_ms": r["tiempo_ms"] if r["exito"] else 0
             })
 
-        # ----------------------------
-        # DATA FINAL (FORMATO CLINICO)
-        # ----------------------------
         data = {
             "id_paciente": self.id_paciente,
-            "fecha": datetime.now().strftime("%Y-%m-%d"),
+            "nombre_paciente": self.nombre_paciente,
+            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "modulo": "Motor-DragDrop",
             "metrica_principal": "Tiempo de Reacción",
-            "valor_promedio": round(promedio, 2),
+            "valor_promedio": round(tiempo_promedio, 2),
             "unidad": "ms",
             "intentos": intentos_json,
-            "observaciones_ia": "Análisis automático básico"
+            "observaciones_ia": self.generar_observaciones(tiempo_promedio),
+
+            # agregado para que siga funcionando la UI final
+            "resumen": {
+                "cantidad_intentos": NUM_INTENTOS,
+                "aciertos": aciertos,
+                "errores": errores,
+                "tiempo_promedio_ms": round(tiempo_promedio, 2)
+            }
         }
 
         # ----------------------------
@@ -591,105 +601,78 @@ class DragDropGame(ctk.CTkFrame):
         self.archivo_json = self.guardar_json(data)
         self.archivo_pdf = self.generar_pdf(data)
 
-        # ----------------------------
-        # PANTALLA FINAL
-        # ----------------------------
-        self.canvas.pack_forget()
-        self.top.pack_forget()
+        self.limpiar_ventana()
 
-        frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=20)
-        frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=0.6, relheight=0.6)
-
-        ctk.CTkLabel(
-            frame,
-            text="Juego finalizado",
-            font=("Arial", 28, "bold"),
-            text_color=COLOR_TEXTO
-        ).pack(pady=30)
-
-        ctk.CTkButton(
-            frame,
-            text="Abrir PDF",
-            command=lambda: self.abrir_archivo(self.archivo_pdf)
-        ).pack(pady=10)
-
-        ctk.CTkButton(
-            frame,
-            text="Cerrar",
-            command=self.destroy
-        ).pack(pady=10)
-        
-       # ----------------------------
-        # PANTALLA FINAL (ESTILO FITTS)
-        # ----------------------------
-        self.canvas.pack_forget()
-        self.top.pack_forget()
-
-        frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=20)
-        frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=0.65, relheight=0.7)
+        frame = self.crear_tarjeta_centrada(relwidth=0.65, relheight=0.8)
 
         ctk.CTkLabel(
             frame,
             text="Evaluación finalizada",
-            font=("Arial", 30, "bold"),
+            font=FUENTE_TITULO,
             text_color=COLOR_TEXTO
-        ).pack(pady=(30, 20))
+        ).pack(pady=(28, 18))
 
-        # RESUMEN
-        resumen = ctk.CTkFrame(frame, fg_color="#0B1220", corner_radius=15)
-        resumen.pack(padx=30, pady=10, fill="x")
+        resumen = ctk.CTkFrame(frame, fg_color="#0B1220", corner_radius=20)
+        resumen.pack(padx=36, pady=10, fill="x")
+
+        items = [
+            f"Paciente: {self.nombre_paciente}",
+            f"DNI: {self.id_paciente}",
+            f"Aciertos: {aciertos}",
+            f"Errores: {errores}",
+            f"Tiempo promedio: {round(tiempo_promedio, 2)} ms",
+            f"Observación: {data['observaciones_ia']}"
+        ]
+
+        for item in items:
+            ctk.CTkLabel(
+                resumen,
+                text=item,
+                font=("Arial", 20, "bold"),
+                text_color=COLOR_TEXTO,
+                wraplength=620,
+                justify="center"
+            ).pack(pady=8, padx=20, anchor="center")
 
         ctk.CTkLabel(
-            resumen,
-            text=f"Paciente: {self.id_paciente}",
-            font=("Arial", 18, "bold"),
-            text_color=COLOR_TEXTO
-        ).pack(pady=5)
+            frame,
+            text="Los informes fueron guardados correctamente.",
+            font=FUENTE_TEXTO_GRANDE,
+            text_color=COLOR_ACCION
+        ).pack(pady=(22, 12))
 
-        ctk.CTkLabel(
-            resumen,
-            text=f"Tiempo promedio: {data['valor_promedio']} ms",
-            font=("Arial", 18, "bold"),
-            text_color=COLOR_TEXTO
-        ).pack(pady=5)
-
-        ctk.CTkLabel(
-            resumen,
-            text=f"Intentos: {len(self.resultados)}",
-            font=("Arial", 18, "bold"),
-            text_color=COLOR_TEXTO
-        ).pack(pady=5)
-
-        # ARCHIVOS
         ctk.CTkLabel(
             frame,
             text=f"PDF: {self.archivo_pdf}",
             font=("Arial", 14),
-            text_color="#CBD5E1",
-            wraplength=600
-        ).pack(pady=5)
+            text_color=COLOR_SUBTEXTO,
+            wraplength=620,
+            justify="center"
+        ).pack(pady=4)
 
         ctk.CTkLabel(
             frame,
             text=f"JSON: {self.archivo_json}",
             font=("Arial", 14),
-            text_color="#CBD5E1",
-            wraplength=600
-        ).pack(pady=5)
-
-        # BOTONES
-        ctk.CTkButton(
+            text_color=COLOR_SUBTEXTO,
+            wraplength=620,
+            justify="center"
+        ).pack(pady=4)
+        
+        self.crear_boton_principal(
             frame,
-            text="Abrir informe PDF",
-            command=lambda: self.abrir_archivo(self.archivo_pdf),
-            fg_color="#3B82F6",
-            hover_color="#2563EB",
-            width=260
-        ).pack(pady=(20, 10))
+            "Abrir informe PDF",
+            lambda: self.abrir_archivo(self.archivo_pdf),
+            color="#3B82F6",
+            hover="#2563EB",
+            width=300
+        ).pack(pady=(14, 8))
 
-        ctk.CTkButton(
+        self.crear_boton_principal(
             frame,
-            text="Volver al menú",
-            command=self.destroy,  # después lo conectás a tu menú real
-            width=260
-        ).pack(pady=10)
+            "Volver al menú",
+            lambda: menu.crear_pantalla_menu(self.parent),
+            color="#64748B",
+            hover="#475569",
+            width=300
+        ).pack(pady=8)
