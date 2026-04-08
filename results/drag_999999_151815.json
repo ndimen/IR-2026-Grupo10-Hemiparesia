@@ -1,0 +1,51 @@
+{
+    "id_paciente": "999999",
+    "fecha": "2026-04-08",
+    "modulo": "Motor-DragDrop",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 1464.62,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 1666.77
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 1284.51
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 1230.87
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 1306.39
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 1442.42
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 1665.12
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 1476.98
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 1643.93
+        }
+    ],
+    "observaciones_ia": "Análisis automático básico"
+}

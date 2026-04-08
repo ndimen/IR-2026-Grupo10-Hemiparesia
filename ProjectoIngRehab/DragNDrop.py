@@ -44,7 +44,7 @@ class DragDropGame(ctk.CTkFrame):
 
         self.parent = parent
         self.configure(fg_color=COLOR_FONDO)
-
+        self.after_id = None
         self.id_paciente = parent.id_paciente
         self.nombre_paciente = parent.nombre_paciente
 
@@ -420,7 +420,7 @@ class DragDropGame(ctk.CTkFrame):
 
         if not self.timer_running:
             self.timer_running = True
-            self.actualizar_tiempo()
+            self.after_id = self.after(50, self.actualizar_tiempo)
 
     # ----------------------------
     def actualizar_tiempo(self):
@@ -429,9 +429,8 @@ class DragDropGame(ctk.CTkFrame):
             self.label_tiempo.configure(text=f"Tiempo: {int(tiempo)} ms")
 
         if self.timer_running:
-            self.after(50, self.actualizar_tiempo)
-
-    # ----------------------------
+            self.after_id = self.after(50, self.actualizar_tiempo)
+        # ----------------------------
     def iniciar_drag(self, event):
         items = self.canvas.find_overlapping(event.x, event.y, event.x, event.y)
         if self.obj in items:
@@ -502,12 +501,16 @@ class DragDropGame(ctk.CTkFrame):
         nombre = f"results/drag_{self.id_paciente}_{datetime.now().strftime('%H%M%S')}.pdf"
 
         c = pdf_canvas.Canvas(nombre, pagesize=A4)
-        y = 800
+        width, height = A4
 
+        y = height - 50
+
+        # TITULO
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(50, y, "Informe Drag & Drop")
+        c.drawString(50, y, "Informe - Juego Drag & Drop")
         y -= 40
 
+        # DATOS GENERALES
         c.setFont("Helvetica", 12)
         c.drawString(50, y, f"Paciente: {data['nombre_paciente']}")
         y -= 20
@@ -529,22 +532,30 @@ class DragDropGame(ctk.CTkFrame):
         for r in data["intentos"]:
             linea = f"Intento {r['intento']} - resultado: {r['resultado']} - latencia: {r['latencia_ms']} ms"
             c.drawString(50, y, linea)
-            y -= 20
-
+            y -= 15
+            
             if y < 60:
                 c.showPage()
                 y = 800
                 c.setFont("Helvetica", 12)
 
+        # OBSERVACIONES
+        y -= 20
+        c.setFont("Helvetica-Oblique", 10)
+        c.drawString(50, y, f"Observaciones: {data['observaciones_ia']}")
+
         y -= 10
         c.drawString(50, y, f"Observaciones: {data['observaciones_ia']}")
 
         c.save()
-        return nombre
 
+        return nombre
     # ----------------------------
     def finalizar(self):
         self.timer_running = False
+        if self.after_id:
+            self.after_cancel(self.after_id)
+            self.after_id = None
 
         tiempos = [r["tiempo_ms"] for r in self.resultados]
         exitos = [r for r in self.resultados if r["exito"]]
@@ -553,6 +564,9 @@ class DragDropGame(ctk.CTkFrame):
         aciertos = len(exitos)
         errores = len(self.resultados) - aciertos
 
+        # ----------------------------
+        # FORMATO NUEVO DE INTENTOS
+        # ----------------------------
         intentos_json = []
         for r in self.resultados:
             intentos_json.append({
@@ -581,6 +595,9 @@ class DragDropGame(ctk.CTkFrame):
             }
         }
 
+        # ----------------------------
+        # GUARDADO DE ARCHIVOS
+        # ----------------------------
         self.archivo_json = self.guardar_json(data)
         self.archivo_pdf = self.generar_pdf(data)
 
@@ -641,7 +658,7 @@ class DragDropGame(ctk.CTkFrame):
             wraplength=620,
             justify="center"
         ).pack(pady=4)
-
+        
         self.crear_boton_principal(
             frame,
             "Abrir informe PDF",
@@ -649,11 +666,13 @@ class DragDropGame(ctk.CTkFrame):
             color="#3B82F6",
             hover="#2563EB",
             width=300
-        ).pack(pady=(18, 10))
+        ).pack(pady=(14, 8))
 
         self.crear_boton_principal(
             frame,
             "Volver al menú",
             lambda: menu.crear_pantalla_menu(self.parent),
+            color="#64748B",
+            hover="#475569",
             width=300
-        ).pack(pady=10)
+        ).pack(pady=8)

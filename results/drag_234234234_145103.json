@@ -1,0 +1,91 @@
+{
+    "id_paciente": "234234234",
+    "fecha": "2026-04-08",
+    "modulo": "Motor-DragDrop",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 5042.32,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 1249.32
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 1335.73
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 1345.07
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 1428.43
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 1200.1
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 1192.83
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 1334.62
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 1950.36
+        },
+        {
+            "intento": 8,
+            "resultado": "fallo",
+            "latencia_ms": 0
+        },
+        {
+            "intento": 8,
+            "resultado": "fallo",
+            "latencia_ms": 0
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 19179.91
+        },
+        {
+            "intento": 8,
+            "resultado": "fallo",
+            "latencia_ms": 0
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 20206.81
+        },
+        {
+            "intento": 8,
+            "resultado": "fallo",
+            "latencia_ms": 0
+        },
+        {
+            "intento": 8,
+            "resultado": "fallo",
+            "latencia_ms": 0
+        },
+        {
+            "intento": 8,
+            "resultado": "fallo",
+            "latencia_ms": 0
+        }
+    ],
+    "observaciones_ia": "Tiempo de reacción elevado. Posible dificultad motora o fatiga."
+}
