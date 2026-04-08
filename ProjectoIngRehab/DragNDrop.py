@@ -509,29 +509,49 @@ class DragDropGame(ctk.CTkFrame):
         y -= 40
 
         c.setFont("Helvetica", 12)
-        c.drawString(50, y, f"Paciente: {self.id_paciente}")
+        c.drawString(50, y, f"Paciente: {data['nombre_paciente']}")
+        y -= 20
+        c.drawString(50, y, f"DNI: {data['id_paciente']}")
+        y -= 20
+        c.drawString(50, y, f"Fecha: {data['fecha']}")
         y -= 30
 
+        c.drawString(50, y, f"Aciertos: {data['resumen']['aciertos']}")
+        y -= 20
+        c.drawString(50, y, f"Errores: {data['resumen']['errores']}")
+        y -= 20
+        c.drawString(50, y, f"Tiempo promedio: {data['resumen']['tiempo_promedio_ms']} ms")
+        y -= 30
+
+        c.drawString(50, y, "Detalle de intentos:")
+        y -= 25
+
         for r in data["intentos"]:
-            linea = f"Intento {r['intento']} - tiempo: {r['tiempo_ms']} ms - exito: {r['exito']}"
+            linea = f"Intento {r['intento']} - resultado: {r['resultado']} - latencia: {r['latencia_ms']} ms"
             c.drawString(50, y, linea)
             y -= 20
+
+            if y < 60:
+                c.showPage()
+                y = 800
+                c.setFont("Helvetica", 12)
+
+        y -= 10
+        c.drawString(50, y, f"Observaciones: {data['observaciones_ia']}")
 
         c.save()
         return nombre
 
     # ----------------------------
     def finalizar(self):
-        print("FINALIZANDO JUEGO")
-
         self.timer_running = False
 
-        # ----------------------------
-        # PROCESAMIENTO DE DATOS
-        # ----------------------------
-        tiempos_validos = [r["tiempo_ms"] for r in self.resultados if r["exito"]]
+        tiempos = [r["tiempo_ms"] for r in self.resultados]
+        exitos = [r for r in self.resultados if r["exito"]]
 
-        promedio = sum(tiempos_validos) / len(tiempos_validos) if tiempos_validos else 0
+        tiempo_promedio = sum(tiempos) / len(tiempos) if tiempos else 0
+        aciertos = len(exitos)
+        errores = len(self.resultados) - aciertos
 
         intentos_json = []
         for r in self.resultados:
@@ -541,53 +561,99 @@ class DragDropGame(ctk.CTkFrame):
                 "latencia_ms": r["tiempo_ms"] if r["exito"] else 0
             })
 
-        # ----------------------------
-        # NUEVO FORMATO JSON
-        # ----------------------------
         data = {
             "id_paciente": self.id_paciente,
-            "fecha": datetime.now().strftime("%Y-%m-%d"),
+            "nombre_paciente": self.nombre_paciente,
+            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "modulo": "Motor-DragDrop",
             "metrica_principal": "Tiempo de Reacción",
-            "valor_promedio": round(promedio, 2),
+            "valor_promedio": round(tiempo_promedio, 2),
             "unidad": "ms",
             "intentos": intentos_json,
-            "observaciones_ia": self.generar_observaciones(promedio)
+            "observaciones_ia": self.generar_observaciones(tiempo_promedio),
+
+            # agregado para que siga funcionando la UI final
+            "resumen": {
+                "cantidad_intentos": NUM_INTENTOS,
+                "aciertos": aciertos,
+                "errores": errores,
+                "tiempo_promedio_ms": round(tiempo_promedio, 2)
+            }
         }
 
         self.archivo_json = self.guardar_json(data)
         self.archivo_pdf = self.generar_pdf(data)
 
-        print("PDF generado en:", self.archivo_pdf)
+        self.limpiar_ventana()
 
-        # ----------------------------
-        # UI FINAL
-        # ----------------------------
-        self.canvas.pack_forget()
-        self.top.pack_forget()
-
-        frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=20)
-        frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=0.6, relheight=0.6)
+        frame = self.crear_tarjeta_centrada(relwidth=0.65, relheight=0.8)
 
         ctk.CTkLabel(
             frame,
-            text="Juego finalizado",
-            font=("Arial", 28, "bold"),
+            text="Evaluación finalizada",
+            font=FUENTE_TITULO,
             text_color=COLOR_TEXTO
-        ).pack(pady=30)
+        ).pack(pady=(28, 18))
 
-        ctk.CTkButton(
-            frame,
-            text="Abrir PDF",
-            command=lambda: self.abrir_archivo(self.archivo_pdf),
-            height=50
-        ).pack(pady=15)
+        resumen = ctk.CTkFrame(frame, fg_color="#0B1220", corner_radius=20)
+        resumen.pack(padx=36, pady=10, fill="x")
 
-        ctk.CTkButton(
+        items = [
+            f"Paciente: {self.nombre_paciente}",
+            f"DNI: {self.id_paciente}",
+            f"Aciertos: {aciertos}",
+            f"Errores: {errores}",
+            f"Tiempo promedio: {round(tiempo_promedio, 2)} ms",
+            f"Observación: {data['observaciones_ia']}"
+        ]
+
+        for item in items:
+            ctk.CTkLabel(
+                resumen,
+                text=item,
+                font=("Arial", 20, "bold"),
+                text_color=COLOR_TEXTO,
+                wraplength=620,
+                justify="center"
+            ).pack(pady=8, padx=20, anchor="center")
+
+        ctk.CTkLabel(
             frame,
-            text="Cerrar",
-            command=self.destroy,
-            fg_color="#EF4444",
-            height=50
+            text="Los informes fueron guardados correctamente.",
+            font=FUENTE_TEXTO_GRANDE,
+            text_color=COLOR_ACCION
+        ).pack(pady=(22, 12))
+
+        ctk.CTkLabel(
+            frame,
+            text=f"PDF: {self.archivo_pdf}",
+            font=("Arial", 14),
+            text_color=COLOR_SUBTEXTO,
+            wraplength=620,
+            justify="center"
+        ).pack(pady=4)
+
+        ctk.CTkLabel(
+            frame,
+            text=f"JSON: {self.archivo_json}",
+            font=("Arial", 14),
+            text_color=COLOR_SUBTEXTO,
+            wraplength=620,
+            justify="center"
+        ).pack(pady=4)
+
+        self.crear_boton_principal(
+            frame,
+            "Abrir informe PDF",
+            lambda: self.abrir_archivo(self.archivo_pdf),
+            color="#3B82F6",
+            hover="#2563EB",
+            width=300
+        ).pack(pady=(18, 10))
+
+        self.crear_boton_principal(
+            frame,
+            "Volver al menú",
+            lambda: menu.crear_pantalla_menu(self.parent),
+            width=300
         ).pack(pady=10)
-

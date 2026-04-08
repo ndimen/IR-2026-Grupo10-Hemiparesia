@@ -1,0 +1,58 @@
+{
+    "id_paciente": "1234567",
+    "nombre_paciente": "martina",
+    "fecha": "2026-04-08 15:23:29",
+    "modulo": "Motor-DragDrop",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 1587.81,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 1883.06
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 1433.1
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 1419.63
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 1668.87
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 1258.95
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 1327.96
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 1992.08
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 1718.8
+        }
+    ],
+    "observaciones_ia": "Tiempo de reacción elevado. Posible dificultad motora o fatiga.",
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 1587.81
+    }
+}
