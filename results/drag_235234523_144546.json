@@ -1,0 +1,53 @@
+{
+    "id_paciente": "235234523",
+    "nombre_paciente": "asas",
+    "fecha": "2026-04-08 14:45:46",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 2291.11,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 2300.66,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 1352.38,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1580.74,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 1462.71,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1680.55,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 1162.07,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 1351.08,
+            "exito": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 1647.66
+    }
+}
