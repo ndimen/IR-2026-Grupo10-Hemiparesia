@@ -44,7 +44,7 @@ class DragDropGame(ctk.CTkFrame):
 
         self.parent = parent
         self.configure(fg_color=COLOR_FONDO)
-
+        self.after_id = None
         self.id_paciente = parent.id_paciente
         self.nombre_paciente = parent.nombre_paciente
 
@@ -420,7 +420,7 @@ class DragDropGame(ctk.CTkFrame):
 
         if not self.timer_running:
             self.timer_running = True
-            self.actualizar_tiempo()
+            self.after_id = self.after(50, self.actualizar_tiempo)
 
     # ----------------------------
     def actualizar_tiempo(self):
@@ -429,9 +429,8 @@ class DragDropGame(ctk.CTkFrame):
             self.label_tiempo.configure(text=f"Tiempo: {int(tiempo)} ms")
 
         if self.timer_running:
-            self.after(50, self.actualizar_tiempo)
-
-    # ----------------------------
+            self.after_id = self.after(50, self.actualizar_tiempo)
+        # ----------------------------
     def iniciar_drag(self, event):
         items = self.canvas.find_overlapping(event.x, event.y, event.x, event.y)
         if self.obj in items:
@@ -522,17 +521,21 @@ class DragDropGame(ctk.CTkFrame):
 
     # ----------------------------
     def finalizar(self):
-        print("FINALIZANDO JUEGO")
-
+        # 🔴 cortar el loop del timer (FIX del bug)
         self.timer_running = False
+        if self.after_id:
+            self.after_cancel(self.after_id)
+            self.after_id = None
 
         # ----------------------------
-        # PROCESAMIENTO DE DATOS
+        # CALCULO DE METRICAS
         # ----------------------------
-        tiempos_validos = [r["tiempo_ms"] for r in self.resultados if r["exito"]]
+        tiempos = [r["tiempo_ms"] for r in self.resultados if r["exito"]]
+        promedio = sum(tiempos) / len(tiempos) if tiempos else 0
 
-        promedio = sum(tiempos_validos) / len(tiempos_validos) if tiempos_validos else 0
-
+        # ----------------------------
+        # FORMATO NUEVO DE INTENTOS
+        # ----------------------------
         intentos_json = []
         for r in self.resultados:
             intentos_json.append({
@@ -542,7 +545,7 @@ class DragDropGame(ctk.CTkFrame):
             })
 
         # ----------------------------
-        # NUEVO FORMATO JSON
+        # DATA FINAL (FORMATO CLINICO)
         # ----------------------------
         data = {
             "id_paciente": self.id_paciente,
@@ -552,16 +555,17 @@ class DragDropGame(ctk.CTkFrame):
             "valor_promedio": round(promedio, 2),
             "unidad": "ms",
             "intentos": intentos_json,
-            "observaciones_ia": self.generar_observaciones(promedio)
+            "observaciones_ia": "Análisis automático básico"
         }
 
+        # ----------------------------
+        # GUARDADO DE ARCHIVOS
+        # ----------------------------
         self.archivo_json = self.guardar_json(data)
         self.archivo_pdf = self.generar_pdf(data)
 
-        print("PDF generado en:", self.archivo_pdf)
-
         # ----------------------------
-        # UI FINAL
+        # PANTALLA FINAL
         # ----------------------------
         self.canvas.pack_forget()
         self.top.pack_forget()
@@ -579,15 +583,11 @@ class DragDropGame(ctk.CTkFrame):
         ctk.CTkButton(
             frame,
             text="Abrir PDF",
-            command=lambda: self.abrir_archivo(self.archivo_pdf),
-            height=50
-        ).pack(pady=15)
+            command=lambda: self.abrir_archivo(self.archivo_pdf)
+        ).pack(pady=10)
 
         ctk.CTkButton(
             frame,
             text="Cerrar",
-            command=self.destroy,
-            fg_color="#EF4444",
-            height=50
+            command=self.destroy
         ).pack(pady=10)
-
