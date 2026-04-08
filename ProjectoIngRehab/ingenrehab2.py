@@ -64,7 +64,7 @@ class FittsApp(ctk.CTkFrame):
         self.obj_anterior = None
         self.tiempo_inicio = None
 
-        self.archivo_json = None
+        
         self.archivo_pdf = None
         self.archivo_json_estandar = None
 
@@ -362,7 +362,6 @@ class FittsApp(ctk.CTkFrame):
         self.errores = 0
         self.resultados = []
         self.obj_anterior = None
-        self.archivo_json = None
         self.archivo_pdf = None
         self.archivo_json_estandar = None
 
@@ -511,12 +510,8 @@ class FittsApp(ctk.CTkFrame):
     # ----------------------------
     # ARCHIVOS
     # ----------------------------
-    def guardar_json(self, data):
-        os.makedirs("results", exist_ok=True)
-        nombre = f"results/fitts_{self.id_paciente}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(nombre, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-        return nombre
+    
+   
 
     def generar_json_estandarizado(self, tiempo_promedio):
         """
@@ -725,7 +720,7 @@ class FittsApp(ctk.CTkFrame):
             }
         }
 
-        self.archivo_json = self.guardar_json(data)
+        
         self.archivo_pdf = self.generar_pdf(data)
         self.archivo_json_estandar = self.generar_json_estandarizado(tiempo_promedio)
         self.mostrar_pantalla_final(data)
@@ -768,32 +763,7 @@ class FittsApp(ctk.CTkFrame):
             text_color=COLOR_ACCION
         ).pack(pady=(22, 12))
 
-        ctk.CTkLabel(
-            frame,
-            text=f"PDF: {self.archivo_pdf}",
-            font=("Arial", 14),
-            text_color=COLOR_SUBTEXTO,
-            wraplength=620,
-            justify="center"
-        ).pack(pady=4)
-
-        ctk.CTkLabel(
-            frame,
-            text=f"JSON: {self.archivo_json}",
-            font=("Arial", 14),
-            text_color=COLOR_SUBTEXTO,
-            wraplength=620,
-            justify="center"
-        ).pack(pady=4)
-
-        ctk.CTkLabel(
-            frame,
-            text=f"JSON Estándar: {self.archivo_json_estandar}",
-            font=("Arial", 14),
-            text_color=COLOR_SUBTEXTO,
-            wraplength=620,
-            justify="center"
-        ).pack(pady=4)
+       
 
         self.crear_boton_principal(
             frame,

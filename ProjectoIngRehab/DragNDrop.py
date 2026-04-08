@@ -439,10 +439,10 @@ class DragDropGame(ctk.CTkFrame):
         if promedio == 0:
             return "No se registraron aciertos."
 
-        if promedio > 1500:
+        if promedio > 3000:
             return "Tiempo de reacción elevado. Posible dificultad motora o fatiga."
 
-        if promedio > 900:
+        if promedio > 2000:
             return "Rendimiento medio con leve fatiga en intentos finales."
         
 
