@@ -1,0 +1,53 @@
+{
+    "id_paciente": "46581404",
+    "nombre_paciente": "RAMIRO",
+    "fecha": "2026-04-05 20:25:56",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 2639.12,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 2620.39,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 1823.73,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1847.28,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 2810.0,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1729.1,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 1987.14,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 2108.23,
+            "exito": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 2195.62
+    }
+}
