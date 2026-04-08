@@ -66,7 +66,8 @@ class FittsApp(ctk.CTkFrame):
 
         self.archivo_json = None
         self.archivo_pdf = None
-        
+        self.archivo_json_estandar = None
+
         self.crear_pantalla_inicio()
 
     def iniciar_cuenta_regresiva(self):
@@ -363,6 +364,7 @@ class FittsApp(ctk.CTkFrame):
         self.obj_anterior = None
         self.archivo_json = None
         self.archivo_pdf = None
+        self.archivo_json_estandar = None
 
         self.crear_pantalla_test()
         self.generar_objetivo()
@@ -516,6 +518,76 @@ class FittsApp(ctk.CTkFrame):
             json.dump(data, f, indent=4, ensure_ascii=False)
         return nombre
 
+    def generar_json_estandarizado(self, tiempo_promedio):
+        """
+        Genera un archivo JSON con el formato estándar de IngenRehab
+        para integración con otros módulos y análisis de IA.
+        """
+        os.makedirs("results", exist_ok=True)
+        nombre = f"results/estandar_fitts_{self.id_paciente}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+
+        # Construir lista de intentos en formato estandarizado
+        intentos_estandar = []
+        for r in self.resultados:
+            intentos_estandar.append({
+                "intento": r["intento"],
+                "resultado": "exito" if r["acierto"] else "fallo",
+                "latencia_ms": r["tiempo_ms"] if r["acierto"] else 0
+            })
+
+        # Generar observaciones automáticas basadas en los datos
+        observaciones = self._generar_observaciones(tiempo_promedio)
+
+        data_estandar = {
+            "id_paciente": self.id_paciente,
+            "fecha": datetime.now().strftime("%Y-%m-%d"),
+            "modulo": "Motor-Barrido (Ley de Fitts)",
+            "metrica_principal": "Tiempo de Reacción",
+            "valor_promedio": round(tiempo_promedio, 2),
+            "unidad": "ms",
+            "intentos": intentos_estandar,
+            "observaciones_ia": observaciones
+        }
+
+        with open(nombre, "w", encoding="utf-8") as f:
+            json.dump(data_estandar, f, indent=4, ensure_ascii=False)
+
+        return nombre
+
+    def _generar_observaciones(self, tiempo_promedio):
+        """
+        Genera un texto de observaciones automáticas según el rendimiento del paciente.
+        """
+        observaciones = []
+
+        # Análisis de tiempo de reacción
+        if tiempo_promedio < 400:
+            observaciones.append("El usuario presenta tiempo de reacción excelente (< 400 ms).")
+        elif tiempo_promedio < 700:
+            observaciones.append("El usuario presenta tiempo de reacción normal (400-700 ms).")
+        else:
+            observaciones.append("El usuario presenta tiempo de reacción elevado (> 700 ms), posible fatiga o dificultad motora.")
+
+        # Análisis de errores
+        tasa_error = self.errores / max(self.aciertos + self.errores, 1)
+        if tasa_error > 0.3:
+            observaciones.append(f"Alta tasa de errores ({self.errores} errores), sugiere dificultad en la precisión motora.")
+        elif self.errores > 0:
+            observaciones.append(f"Se registraron {self.errores} errores leves durante la sesión.")
+
+        # Análisis de tendencia de fatiga (comparar primera mitad vs segunda mitad)
+        mitad = len(self.resultados) // 2
+        if mitad > 0:
+            tiempos_primera = [r["tiempo_ms"] for r in self.resultados[:mitad]]
+            tiempos_segunda = [r["tiempo_ms"] for r in self.resultados[mitad:]]
+            prom_primera = sum(tiempos_primera) / len(tiempos_primera)
+            prom_segunda = sum(tiempos_segunda) / len(tiempos_segunda)
+            if prom_segunda > prom_primera * 1.2:
+                intento_fatiga = mitad + 1
+                observaciones.append(f"El usuario presenta signos de fatiga a partir del intento {intento_fatiga} (aumento del tiempo de reacción en la segunda mitad).")
+
+        return " ".join(observaciones) if observaciones else "Sin observaciones relevantes."
+
     def generar_pdf(self, data):
         os.makedirs("results", exist_ok=True)
         nombre_pdf = f"results/informe_fitts_{self.id_paciente}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
@@ -603,6 +675,7 @@ class FittsApp(ctk.CTkFrame):
 
         self.archivo_json = self.guardar_json(data)
         self.archivo_pdf = self.generar_pdf(data)
+        self.archivo_json_estandar = self.generar_json_estandarizado(tiempo_promedio)
         self.mostrar_pantalla_final(data)
 
     def mostrar_pantalla_final(self, data):
@@ -655,6 +728,15 @@ class FittsApp(ctk.CTkFrame):
         ctk.CTkLabel(
             frame,
             text=f"JSON: {self.archivo_json}",
+            font=("Arial", 14),
+            text_color=COLOR_SUBTEXTO,
+            wraplength=620,
+            justify="center"
+        ).pack(pady=4)
+
+        ctk.CTkLabel(
+            frame,
+            text=f"JSON Estándar: {self.archivo_json_estandar}",
             font=("Arial", 14),
             text_color=COLOR_SUBTEXTO,
             wraplength=620,
