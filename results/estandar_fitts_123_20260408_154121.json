@@ -1,0 +1,61 @@
+{
+    "id_paciente": "123",
+    "fecha": "2026-04-08",
+    "modulo": "Motor-Barrido (Ley de Fitts)",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 575.8,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 827.36
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 545.46
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 453.25
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 484.3
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 635.58
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 494.29
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 881.88
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 465.94
+        },
+        {
+            "intento": 9,
+            "resultado": "exito",
+            "latencia_ms": 429.07
+        },
+        {
+            "intento": 10,
+            "resultado": "exito",
+            "latencia_ms": 540.86
+        }
+    ],
+    "observaciones_ia": "El usuario presenta tiempo de reacción normal (400-700 ms). Se registraron 1 errores leves durante la sesión."
+}
