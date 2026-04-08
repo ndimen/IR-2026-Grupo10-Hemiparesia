@@ -641,23 +641,6 @@ class DragDropGame(ctk.CTkFrame):
             text_color=COLOR_ACCION
         ).pack(pady=(22, 12))
 
-        ctk.CTkLabel(
-            frame,
-            text=f"PDF: {self.archivo_pdf}",
-            font=("Arial", 14),
-            text_color=COLOR_SUBTEXTO,
-            wraplength=620,
-            justify="center"
-        ).pack(pady=4)
-
-        ctk.CTkLabel(
-            frame,
-            text=f"JSON: {self.archivo_json}",
-            font=("Arial", 14),
-            text_color=COLOR_SUBTEXTO,
-            wraplength=620,
-            justify="center"
-        ).pack(pady=4)
         
         self.crear_boton_principal(
             frame,
@@ -666,13 +649,11 @@ class DragDropGame(ctk.CTkFrame):
             color="#3B82F6",
             hover="#2563EB",
             width=300
-        ).pack(pady=(14, 8))
+        ).pack(pady=(18, 10))
 
         self.crear_boton_principal(
             frame,
             "Volver al menú",
             lambda: menu.crear_pantalla_menu(self.parent),
-            color="#64748B",
-            hover="#475569",
             width=300
-        ).pack(pady=8)
+        ).pack(pady=10)
