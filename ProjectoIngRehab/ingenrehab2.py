@@ -558,12 +558,12 @@ class FittsApp(ctk.CTkFrame):
         observaciones = []
 
         # Análisis de tiempo de reacción
-        if tiempo_promedio < 400:
-            observaciones.append("El usuario presenta tiempo de reacción excelente (< 400 ms).")
-        elif tiempo_promedio < 700:
-            observaciones.append("El usuario presenta tiempo de reacción normal (400-700 ms).")
+        if tiempo_promedio < 900:
+            observaciones.append("El usuario presenta tiempo de reacción excelente (< 900 ms).")
+        elif tiempo_promedio < 1500:
+            observaciones.append("El usuario presenta tiempo de reacción normal (900-1500 ms).")
         else:
-            observaciones.append("El usuario presenta tiempo de reacción elevado (> 700 ms), posible fatiga o dificultad motora.")
+            observaciones.append("El usuario presenta tiempo de reacción elevado (> 1500 ms), posible fatiga o dificultad motora.")
 
         # Análisis de errores
         tasa_error = self.errores / max(self.aciertos + self.errores, 1)
