@@ -619,8 +619,77 @@ class DragDropGame(ctk.CTkFrame):
             command=self.destroy
         ).pack(pady=10)
         
-        # 🔥 abrir pdf automáticamente
-        self.after(500, lambda: self.abrir_archivo(self.archivo_pdf))
+       # ----------------------------
+        # PANTALLA FINAL (ESTILO FITTS)
+        # ----------------------------
+        self.canvas.pack_forget()
+        self.top.pack_forget()
 
-        # 🔥 cerrar app automáticamente
-        self.after(1500, self.destroy)
+        frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=20)
+        frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=0.65, relheight=0.7)
+
+        ctk.CTkLabel(
+            frame,
+            text="Evaluación finalizada",
+            font=("Arial", 30, "bold"),
+            text_color=COLOR_TEXTO
+        ).pack(pady=(30, 20))
+
+        # RESUMEN
+        resumen = ctk.CTkFrame(frame, fg_color="#0B1220", corner_radius=15)
+        resumen.pack(padx=30, pady=10, fill="x")
+
+        ctk.CTkLabel(
+            resumen,
+            text=f"Paciente: {self.id_paciente}",
+            font=("Arial", 18, "bold"),
+            text_color=COLOR_TEXTO
+        ).pack(pady=5)
+
+        ctk.CTkLabel(
+            resumen,
+            text=f"Tiempo promedio: {data['valor_promedio']} ms",
+            font=("Arial", 18, "bold"),
+            text_color=COLOR_TEXTO
+        ).pack(pady=5)
+
+        ctk.CTkLabel(
+            resumen,
+            text=f"Intentos: {len(self.resultados)}",
+            font=("Arial", 18, "bold"),
+            text_color=COLOR_TEXTO
+        ).pack(pady=5)
+
+        # ARCHIVOS
+        ctk.CTkLabel(
+            frame,
+            text=f"PDF: {self.archivo_pdf}",
+            font=("Arial", 14),
+            text_color="#CBD5E1",
+            wraplength=600
+        ).pack(pady=5)
+
+        ctk.CTkLabel(
+            frame,
+            text=f"JSON: {self.archivo_json}",
+            font=("Arial", 14),
+            text_color="#CBD5E1",
+            wraplength=600
+        ).pack(pady=5)
+
+        # BOTONES
+        ctk.CTkButton(
+            frame,
+            text="Abrir informe PDF",
+            command=lambda: self.abrir_archivo(self.archivo_pdf),
+            fg_color="#3B82F6",
+            hover_color="#2563EB",
+            width=260
+        ).pack(pady=(20, 10))
+
+        ctk.CTkButton(
+            frame,
+            text="Volver al menú",
+            command=self.destroy,  # después lo conectás a tu menú real
+            width=260
+        ).pack(pady=10)
