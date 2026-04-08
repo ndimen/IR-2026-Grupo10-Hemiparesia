@@ -501,24 +501,51 @@ class DragDropGame(ctk.CTkFrame):
         nombre = f"results/drag_{self.id_paciente}_{datetime.now().strftime('%H%M%S')}.pdf"
 
         c = pdf_canvas.Canvas(nombre, pagesize=A4)
-        y = 800
+        width, height = A4
 
+        y = height - 50
+
+        # TITULO
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(50, y, "Informe Drag & Drop")
+        c.drawString(50, y, "Informe - Juego Drag & Drop")
         y -= 40
 
+        # DATOS GENERALES
         c.setFont("Helvetica", 12)
-        c.drawString(50, y, f"Paciente: {self.id_paciente}")
+        c.drawString(50, y, f"Paciente: {data['id_paciente']}")
+        y -= 20
+        c.drawString(50, y, f"Fecha: {data['fecha']}")
+        y -= 20
+        c.drawString(50, y, f"Métrica: {data['metrica_principal']}")
+        y -= 20
+        c.drawString(50, y, f"Promedio: {data['valor_promedio']} {data['unidad']}")
         y -= 30
 
-        for r in data["intentos"]:
-            linea = f"Intento {r['intento']} - tiempo: {r['tiempo_ms']} ms - exito: {r['exito']}"
+        # DETALLE
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(50, y, "Intentos:")
+        y -= 20
+
+        c.setFont("Helvetica", 10)
+
+        for intento in data["intentos"]:
+            linea = f"Intento {intento['intento']} - {intento['resultado']} - {intento['latencia_ms']} ms"
             c.drawString(50, y, linea)
-            y -= 20
+            y -= 15
+
+            if y < 50:
+                c.showPage()
+                y = height - 50
+                c.setFont("Helvetica", 10)
+
+        # OBSERVACIONES
+        y -= 20
+        c.setFont("Helvetica-Oblique", 10)
+        c.drawString(50, y, f"Observaciones: {data['observaciones_ia']}")
 
         c.save()
-        return nombre
 
+        return nombre
     # ----------------------------
     def finalizar(self):
         # 🔴 cortar el loop del timer (FIX del bug)
@@ -591,3 +618,9 @@ class DragDropGame(ctk.CTkFrame):
             text="Cerrar",
             command=self.destroy
         ).pack(pady=10)
+        
+        # 🔥 abrir pdf automáticamente
+        self.after(500, lambda: self.abrir_archivo(self.archivo_pdf))
+
+        # 🔥 cerrar app automáticamente
+        self.after(1500, self.destroy)
