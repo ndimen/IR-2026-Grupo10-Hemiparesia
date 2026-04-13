@@ -791,8 +791,153 @@ class MazeApp(ctk.CTkFrame):
         y -= 0.5*cm
         c.setFont("Helvetica-Oblique", 10)
         c.drawString(2*cm, y, "Informe generado automaticamente por OpenRehab ACV.")
+        
+        y -= 0.8*cm
+        c.setFont("Helvetica-Bold", 13)
+        c.drawString(2*cm, y, "Observaciones clínicas")
+        y -= 0.8*cm
+
+        c.setFont("Helvetica-Oblique", 10)
+        # Dividimos el texto largo en líneas para que no se corte
+        obs_texto = data.get("observaciones", "Sin observaciones.")
+        max_chars = 110  # caracteres por línea aprox. en A4
+        palabras  = obs_texto.split()
+        linea_actual = ""
+        for palabra in palabras:
+            if len(linea_actual) + len(palabra) + 1 <= max_chars:
+                linea_actual += (" " if linea_actual else "") + palabra
+            else:
+                c.drawString(2*cm, y, linea_actual)
+                y -= 0.5*cm
+                if y < 2*cm:
+                    c.showPage(); y = al - 2*cm; c.setFont("Helvetica-Oblique", 10)
+                linea_actual = palabra
+        if linea_actual:
+            c.drawString(2*cm, y, linea_actual)
+            y -= 0.5*cm
         c.save()
         return nombre_pdf
+
+    def generar_observaciones(self, data):
+        """
+    Analiza los resultados del test de laberinto y genera observaciones clínicas
+    basadas en los umbrales patológicos definidos por el estudio de referencia.
+
+    Umbrales patológicos:
+      - Tiempo por laberinto: > 20000 ms (fácil), > 30000 ms (medio), > 40000 ms (difícil)
+      - Colisiones por laberinto: >= 9
+      - Porcentaje de tiempo fuera del camino: >= 15%
+      - Índice de ruido motor global: > 5
+    """
+        observaciones = []
+        nombres_dificultad = {1: "fácil", 2: "medio", 3: "difícil"}
+        umbrales_tiempo    = {1: 20000,   2: 30000,   3: 40000}
+
+        # ── Análisis por laberinto ──────────────────────────────────────────────
+        labs_tiempo_pat   = []
+        labs_colision_pat = []
+        labs_fuera_pat    = []
+
+        for lab in data["laberintos"]:
+            dif   = lab["dificultad"]
+            umbral = umbrales_tiempo.get(dif, 20000)
+
+            if lab["duracion_ms"] > umbral:
+                labs_tiempo_pat.append(
+                    f"Laberinto {lab['laberinto']} ({nombres_dificultad[dif]}): "
+                    f"{lab['duracion_ms']} ms (umbral: {umbral} ms)"
+                )
+
+            if lab["colisiones"] >= 9:
+                labs_colision_pat.append(
+                    f"Laberinto {lab['laberinto']}: {lab['colisiones']} colisiones"
+                )
+
+            if lab["porcentaje_fuera"] >= 15.0:
+                labs_fuera_pat.append(
+                    f"Laberinto {lab['laberinto']}: {lab['porcentaje_fuera']}% fuera del corredor"
+                )
+
+        # ── Observaciones de tiempo ─────────────────────────────────────────────
+        if labs_tiempo_pat:
+            detalle = "; ".join(labs_tiempo_pat)
+            observaciones.append(
+                f"Tiempo de ejecución patológico en {len(labs_tiempo_pat)} laberinto(s): {detalle}. "
+                "Puede indicar lentitud motora o dificultad para planificar el movimiento."
+            )
+        else:
+            observaciones.append(
+                "Los tiempos de ejecución se encuentran dentro de los rangos esperados para cada nivel de dificultad."
+            )
+
+        # ── Observaciones de colisiones ─────────────────────────────────────────
+        total_col = data["resumen"]["total_colisiones"]
+        if labs_colision_pat:
+            detalle = "; ".join(labs_colision_pat)
+            observaciones.append(
+                f"Se registraron 9 o más colisiones en {len(labs_colision_pat)} laberinto(s): {detalle}. "
+                "Esto sugiere dificultad en el control de trayectoria y posible déficit de coordinación visomotora."
+            )
+        elif total_col > 0:
+            observaciones.append(
+                f"Se registraron {total_col} colisión/es en total, sin superar el umbral patológico por laberinto."
+            )
+        else:
+            observaciones.append("No se registraron colisiones durante la sesión.")
+
+        # ── Observaciones de porcentaje fuera del corredor ──────────────────────
+        if labs_fuera_pat:
+            detalle = "; ".join(labs_fuera_pat)
+            observaciones.append(
+                f"Porcentaje de tiempo fuera del corredor patológico (≥ 15%) en "
+                f"{len(labs_fuera_pat)} laberinto(s): {detalle}. "
+                "Indica dificultad para mantener el cursor dentro del trayecto requerido."
+            )
+        else:
+            pct_prom = data["resumen"]["promedio_porcentaje_fuera"]
+            observaciones.append(
+                f"El porcentaje promedio de tiempo fuera del corredor fue de {pct_prom}%, "
+                "dentro del rango normal (< 15%)."
+            )
+
+        # ── Observaciones del índice de ruido motor global ──────────────────────
+        ruido = data["resumen"]["indice_ruido_motor"]
+        if ruido > 5:
+            observaciones.append(
+                f"El índice de ruido motor global es {ruido}, superando el umbral patológico de 5. "
+                "Este resultado es consistente con presencia de temblor, espasticidad u otro componente de inestabilidad motora."
+            )
+        else:
+            observaciones.append(
+                f"El índice de ruido motor global es {ruido}, dentro del rango normal (≤ 5)."
+            )
+
+        # ── Conclusión general ───────────────────────────────────────────────────
+        indicadores_pat = sum([
+            bool(labs_tiempo_pat),
+            bool(labs_colision_pat),
+            bool(labs_fuera_pat),
+            ruido > 5
+        ])
+
+        if indicadores_pat == 0:
+            observaciones.append(
+                "Conclusión: el paciente presentó un desempeño general dentro de los parámetros normales."
+            )
+        elif indicadores_pat == 1:
+            observaciones.append(
+                "Conclusión: se detectó un indicador fuera del rango normal. Se recomienda seguimiento clínico."
+            )
+        elif indicadores_pat == 2:
+            observaciones.append(
+                "Conclusión: se detectaron dos indicadores patológicos. Se sugiere evaluación clínica complementaria."
+            )
+        else:
+            observaciones.append(
+                "Conclusión: múltiples indicadores patológicos. Se recomienda derivación a especialista para evaluación motora detallada."
+            )
+
+        return " ".join(observaciones)
 
     # ----------------------------
     # FINALIZACION
@@ -816,6 +961,7 @@ class MazeApp(ctk.CTkFrame):
                 "indice_ruido_motor":        ruido
             }
         }
+        data["observaciones"] = self.generar_observaciones(data)
         self.archivo_json = self.guardar_json(data)
         self.archivo_pdf  = self.generar_pdf(data)
         self.mostrar_pantalla_final(data)

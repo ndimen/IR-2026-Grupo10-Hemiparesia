@@ -1,0 +1,53 @@
+{
+    "id_paciente": "46346847",
+    "nombre_paciente": "candelaria",
+    "fecha": "2026-04-03 18:26:28",
+    "intentos": [
+        {
+            "intento": 1,
+            "tiempo_ms": 1563.58,
+            "exito": true
+        },
+        {
+            "intento": 2,
+            "tiempo_ms": 1361.06,
+            "exito": true
+        },
+        {
+            "intento": 3,
+            "tiempo_ms": 1087.34,
+            "exito": true
+        },
+        {
+            "intento": 4,
+            "tiempo_ms": 1316.38,
+            "exito": true
+        },
+        {
+            "intento": 5,
+            "tiempo_ms": 1439.23,
+            "exito": true
+        },
+        {
+            "intento": 6,
+            "tiempo_ms": 1231.28,
+            "exito": true
+        },
+        {
+            "intento": 7,
+            "tiempo_ms": 1264.08,
+            "exito": true
+        },
+        {
+            "intento": 8,
+            "tiempo_ms": 1379.16,
+            "exito": true
+        }
+    ],
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 1330.26
+    }
+}

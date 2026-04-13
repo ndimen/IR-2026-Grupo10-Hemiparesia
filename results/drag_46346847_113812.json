@@ -1,0 +1,58 @@
+{
+    "id_paciente": "46346847",
+    "nombre_paciente": "candelaria",
+    "fecha": "2026-04-13 11:38:12",
+    "modulo": "Motor-DragDrop",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 1655.4,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 1841.43
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 1685.34
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 1698.55
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 1548.62
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 1672.34
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 1683.12
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 1711.51
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 1402.3
+        }
+    ],
+    "observaciones_ia": "Buen rendimiento general, tiempos de reacción adecuados.",
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 1655.4
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "id_paciente": "46346847",
+    "fecha": "2026-04-13 12:33:44",
+    "laberintos": [
+        {
+            "laberinto": 1,
+            "dificultad": 1,
+            "duracion_ms": 2814.17,
+            "colisiones": 0,
+            "muestras_totales": 370,
+            "muestras_fuera": 0,
+            "porcentaje_fuera": 0.0,
+            "ruido_motor_estimado": 0.0
+        },
+        {
+            "laberinto": 2,
+            "dificultad": 2,
+            "duracion_ms": 5569.85,
+            "colisiones": 6,
+            "muestras_totales": 638,
+            "muestras_fuera": 94,
+            "porcentaje_fuera": 14.73,
+            "ruido_motor_estimado": 4.473
+        },
+        {
+            "laberinto": 3,
+            "dificultad": 3,
+            "duracion_ms": 6988.25,
+            "colisiones": 7,
+            "muestras_totales": 835,
+            "muestras_fuera": 314,
+            "porcentaje_fuera": 37.6,
+            "ruido_motor_estimado": 7.26
+        }
+    ],
+    "resumen": {
+        "total_laberintos": 3,
+        "total_colisiones": 13,
+        "tiempo_total_ms": 15372.27,
+        "promedio_porcentaje_fuera": 17.44,
+        "indice_ruido_motor": 3.911
+    },
+    "observaciones": "Los tiempos de ejecución se encuentran dentro de los rangos esperados para cada nivel de dificultad. Se registraron 13 colisión/es en total, sin superar el umbral patológico por laberinto. Porcentaje de tiempo fuera del corredor patológico (≥ 15%) en 1 laberinto(s): Laberinto 3: 37.6% fuera del corredor. Indica dificultad para mantener el cursor dentro del trayecto requerido. El índice de ruido motor global es 3.911, dentro del rango normal (≤ 5). Conclusión: se detectó un indicador fuera del rango normal. Se recomienda seguimiento clínico."
+}
