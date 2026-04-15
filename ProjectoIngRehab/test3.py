@@ -989,18 +989,6 @@ class MazeApp(ctk.CTkFrame):
                          font=("Arial", 19, "bold"),
                          text_color=COLOR_TEXTO).pack(pady=6, padx=20, anchor="center")
 
-        ctk.CTkLabel(frame, text="Los informes fueron guardados correctamente.",
-                     font=FUENTE_TEXTO_GRANDE,
-                     text_color=COLOR_ACCION).pack(pady=(20, 8))
-
-        ctk.CTkLabel(frame, text=f"PDF: {self.archivo_pdf}",
-                     font=("Arial", 13), text_color=COLOR_SUBTEXTO,
-                     wraplength=620, justify="center").pack(pady=2)
-
-        ctk.CTkLabel(frame, text=f"JSON: {self.archivo_json}",
-                     font=("Arial", 13), text_color=COLOR_SUBTEXTO,
-                     wraplength=620, justify="center").pack(pady=2)
-
         self.crear_boton_principal(
             frame, "Abrir informe PDF",
             lambda: self.abrir_archivo(self.archivo_pdf),

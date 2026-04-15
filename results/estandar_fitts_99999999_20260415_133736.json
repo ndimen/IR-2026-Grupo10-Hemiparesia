@@ -1,0 +1,67 @@
+{
+    "id_paciente": "99999999",
+    "fecha": "2026-04-15",
+    "modulo": "Motor-Barrido (Ley de Fitts)",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 1103.43,
+    "unidad": "ms",
+    "evaluacion_desempeno": {
+        "etiqueta": "Lento pero preciso",
+        "velocidad": "lento",
+        "precision": "preciso",
+        "descripcion": "El paciente es cuidadoso pero lento. Puede indicar estrategia compensatoria o fatiga leve."
+    },
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 4245.79
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 649.77
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 614.14
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 1215.95
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 1032.12
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 698.03
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 665.37
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 598.73
+        },
+        {
+            "intento": 9,
+            "resultado": "exito",
+            "latencia_ms": 598.8
+        },
+        {
+            "intento": 10,
+            "resultado": "exito",
+            "latencia_ms": 715.63
+        }
+    ],
+    "observaciones_ia": "El usuario presenta tiempo de reacción normal (900-1500 ms)."
+}

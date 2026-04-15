@@ -1,0 +1,24 @@
+{
+    "id_paciente": "0",
+    "fecha": "2026-04-15 13:48:56",
+    "laberintos": [
+        {
+            "laberinto": 1,
+            "dificultad": 1,
+            "duracion_ms": 1884.23,
+            "colisiones": 1,
+            "muestras_totales": 155,
+            "muestras_fuera": 11,
+            "porcentaje_fuera": 7.1,
+            "ruido_motor_estimado": 1.21
+        }
+    ],
+    "resumen": {
+        "total_laberintos": 1,
+        "total_colisiones": 1,
+        "tiempo_total_ms": 1884.23,
+        "promedio_porcentaje_fuera": 7.1,
+        "indice_ruido_motor": 1.21
+    },
+    "observaciones": "Los tiempos de ejecución se encuentran dentro de los rangos esperados para cada nivel de dificultad. Se registraron 1 colisión/es en total, sin superar el umbral patológico por laberinto. El porcentaje promedio de tiempo fuera del corredor fue de 7.1%, dentro del rango normal (< 15%). El índice de ruido motor global es 1.21, dentro del rango normal (≤ 5). Conclusión: el paciente presentó un desempeño general dentro de los parámetros normales."
+}

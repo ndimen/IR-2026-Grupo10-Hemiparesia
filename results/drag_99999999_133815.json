@@ -1,0 +1,58 @@
+{
+    "id_paciente": "99999999",
+    "nombre_paciente": "nivo",
+    "fecha": "2026-04-15 13:38:15",
+    "modulo": "Motor-DragDrop",
+    "metrica_principal": "Tiempo de Reacción",
+    "valor_promedio": 2047.92,
+    "unidad": "ms",
+    "intentos": [
+        {
+            "intento": 1,
+            "resultado": "exito",
+            "latencia_ms": 2550.84
+        },
+        {
+            "intento": 2,
+            "resultado": "exito",
+            "latencia_ms": 1951.72
+        },
+        {
+            "intento": 3,
+            "resultado": "exito",
+            "latencia_ms": 1547.65
+        },
+        {
+            "intento": 4,
+            "resultado": "exito",
+            "latencia_ms": 2350.83
+        },
+        {
+            "intento": 5,
+            "resultado": "exito",
+            "latencia_ms": 2200.81
+        },
+        {
+            "intento": 6,
+            "resultado": "exito",
+            "latencia_ms": 1347.68
+        },
+        {
+            "intento": 7,
+            "resultado": "exito",
+            "latencia_ms": 2332.86
+        },
+        {
+            "intento": 8,
+            "resultado": "exito",
+            "latencia_ms": 2100.99
+        }
+    ],
+    "observaciones_ia": "Rendimiento medio con leve fatiga en intentos finales.",
+    "resumen": {
+        "cantidad_intentos": 8,
+        "aciertos": 8,
+        "errores": 0,
+        "tiempo_promedio_ms": 2047.92
+    }
+}
